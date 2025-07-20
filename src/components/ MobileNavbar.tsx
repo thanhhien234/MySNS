@@ -48,7 +48,7 @@ function MobileNavbar() {
             <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
               <Link href="/">
                 <HomeIcon className="w-4 h-4" />
-                Home
+                홈
               </Link>
             </Button>
 
@@ -57,26 +57,26 @@ function MobileNavbar() {
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
                   <Link href="/notifications">
                     <BellIcon className="w-4 h-4" />
-                    Notifications
+                    알림
                   </Link>
                 </Button>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
                   <Link href="/profile">
                     <UserIcon className="w-4 h-4" />
-                    Profile
+                    프로필
                   </Link>
                 </Button>
                 <SignOutButton>
                   <Button variant="ghost" className="flex items-center gap-3 justify-start w-full">
                     <LogOutIcon className="w-4 h-4" />
-                    Logout
+                    로그아웃
                   </Button>
                 </SignOutButton>
               </>
             ) : (
               <SignInButton mode="modal">
                 <Button variant="default" className="w-full">
-                  Sign In
+                  회원가입
                 </Button>
               </SignInButton>
             )}
