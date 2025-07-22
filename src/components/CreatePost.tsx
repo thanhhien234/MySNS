@@ -69,7 +69,7 @@ export default function CreatePost() {
             <Button
               className="flex items-center"
               onClick={handleSubmit}
-              disabled={(!content.trim()) || isPosting}
+              disabled={(!content.trim() && !imageUrl) || isPosting}
             >
               {isPosting ? (
                 <>
