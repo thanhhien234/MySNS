@@ -7,21 +7,26 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { createPost } from "@/actions/post.action";
-import { Loader2Icon, SendIcon } from "lucide-react";
+import {  ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 
 export default function CreatePost() {
   const { user } = useUser();
   const [content, setContent] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
     if (!content.trim()) return;
 
     setIsPosting(true);
     try {
-      const result = await createPost(content, ""); //imageUrl  = null
+      const result = await createPost(content, imageUrl);
       if (result?.success) {
         setContent("");  // reset the form
+        setImageUrl("");
+        setShowImageUpload(false);
+        console.log("Post successfully:", result);
       }
     } catch (error) {
       console.error("Failed", error);
@@ -50,7 +55,16 @@ export default function CreatePost() {
 
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
-              
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-primary"
+                onClick={() => setShowImageUpload(!showImageUpload)}
+                disabled={isPosting}
+              >
+                <ImageIcon className="size-4 mr-2" />
+              </Button>
             </div>
             <Button
               className="flex items-center"
