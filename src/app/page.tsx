@@ -1,20 +1,14 @@
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import ModeToggle from "@/components/ModeToggle";
+import CreatePost from "@/components/CreatePost";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function Home() {
+export default async function Home() {
+  const user = await currentUser();
+
   return (
-    <div className="m-4">
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button>Sign in</Button>
-        </SignInButton>
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-
-      <ModeToggle/>
+    <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+      <div className="lg:col-span-6">
+        {user ? <CreatePost /> : null}
+      </div>
     </div>
   );
 }

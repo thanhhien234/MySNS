@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -46,6 +47,7 @@ export default function RootLayout({
                     <div className="hidden lg:block lg:col-span-3">
                       <Sidebar/>
                     </div>
+                    <div className="lg:col-span-9">{children}</div>
                   </div>
                 </div>
               </main>
