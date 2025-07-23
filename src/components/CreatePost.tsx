@@ -1,20 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { createPost } from "@/actions/post.action";
-import {  ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { ImageIcon, Loader2Icon, SendIcon, XIcon } from "lucide-react";
+import Image from "next/image";
 
 export default function CreatePost() {
   const { user } = useUser();
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const handleSubmit = async () => {
     if (!content.trim()) return;
@@ -23,9 +25,9 @@ export default function CreatePost() {
     try {
       const result = await createPost(content, imageUrl);
       if (result?.success) {
-        setContent("");  // reset the form
+        setContent(""); // reset the form
         setImageUrl("");
-        setShowImageUpload(false);
+        setUploadingImage(false);
         console.log("Post successfully:", result);
       }
     } catch (error) {
@@ -33,6 +35,31 @@ export default function CreatePost() {
     } finally {
       setIsPosting(false);
     }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    setUploadingImage(true);
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error("이미지 업로드 실패");
+    }
+
+    const data = await res.json();
+    setImageUrl(data.url);
+    setUploadingImage(false);
   };
 
   return (
@@ -52,6 +79,33 @@ export default function CreatePost() {
             />
           </div>
 
+          {imageUrl && (
+            <div className="relative w-full max-w-xs">
+              <Image
+                src={imageUrl}
+                alt="preview"
+                className="rounded-md object-cover"
+                width={300}
+                height={200}
+              />
+              <button
+                type="button"
+                className="absolute top-1 right-1 bg-white rounded-full p-1 shadow"
+                onClick={() => setImageUrl("")}
+                disabled={isPosting}
+              >
+                <XIcon className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+          )}
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleImageChange}
+          />
 
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
@@ -60,10 +114,15 @@ export default function CreatePost() {
                 variant="ghost"
                 size="sm"
                 className="text-muted-foreground hover:text-primary"
-                onClick={() => setShowImageUpload(!showImageUpload)}
-                disabled={isPosting}
+                onClick={handleImageClick}
+                disabled={isPosting || uploadingImage}
               >
-                <ImageIcon className="size-4 mr-2" />
+                {uploadingImage ? (
+                  <>
+                    <Loader2Icon className="size-4 mr-2 animate-spin" />
+                    Image Posting...
+                  </>
+                ) : <ImageIcon className="size-4 mr-2" />}
               </Button>
             </div>
             <Button
