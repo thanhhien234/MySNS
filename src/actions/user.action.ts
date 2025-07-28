@@ -37,8 +37,6 @@ export async function getUserByClerkId(clerkId:string) {
     include: {
       _count: {
         select: {
-          followers: true,
-          following: true,
           posts: true
         },
       },

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
+import CommentSection from "./CommentSection";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
@@ -61,6 +62,8 @@ function PostCard({ post }: { post: Post }) {
             </div>
           )}
         </div>
+        {/* 댓글 */}
+        <CommentSection postId={post.id} />
       </CardContent>
     </Card>
   );

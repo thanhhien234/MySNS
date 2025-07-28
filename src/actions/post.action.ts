@@ -47,14 +47,8 @@ export async function getPosts() {
           createdAt: "asc",
         },
       },
-      likes: {
-        select: {
-          userId: true,
-        },
-      },
       _count: {
         select: {
-          likes: true,
           comments: true,
         },
       },
