@@ -7,7 +7,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 
@@ -68,8 +68,13 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                       size="icon"
                       className="text-red-500 hover:text-red-700"
                       onClick={handleDelete}
+                      disabled={isDeleting}
                     >
-                      <Trash2 className="w-4 h-4" />
+                      {isDeleting ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
                     </Button>
                   )}
               </div>
