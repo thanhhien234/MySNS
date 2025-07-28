@@ -21,12 +21,13 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
     if (isDeleting) return;
     setIsDeleting(true);
     const result = await deletePost(post.id);
-    if (result.success){
+    if (result?.success){
       console.log("delete successfully")
     }
     else{
       console.log("delete failed")
     }
+    setIsDeleting(false)
   }
   return (
     <Card className="overflow-hidden">
