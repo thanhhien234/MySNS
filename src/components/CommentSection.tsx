@@ -36,7 +36,7 @@ export default function CommentSection({ postId }: { postId: string }) {
 
   return (
     <div className="mt-4">
-      <div className="mt-4 space-y-4">
+      <div className="mt-4 space-y-2">
         {comments.map((c) => (
           <div key={c.id} className="flex items-center gap-3">
             {c.author.imageUrl ? (
