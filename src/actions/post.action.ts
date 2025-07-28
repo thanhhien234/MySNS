@@ -57,3 +57,22 @@ export async function getPosts() {
 
   return posts;
 }
+
+export async function deletePost(postId: string) {
+  const userId = await getUserId();
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { authorId: true },
+  });
+
+  if (!post) throw new Error("Post not found");
+  if (post.authorId !== userId)
+    throw new Error("Unauthorized - no delete permission");
+
+  await prisma.post.delete({
+    where: { id: postId },
+  });
+
+  return { success: true };
+}

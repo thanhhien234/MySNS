@@ -1,6 +1,6 @@
 "use client";
 
-import { getPosts } from "@/actions/post.action";
+import { getPosts, deletePost } from "@/actions/post.action";
 import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "./ui/avatar";
@@ -9,11 +9,25 @@ import Image from "next/image";
 import CommentSection from "./CommentSection";
 import { Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { useState } from "react";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
 
 function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    if (isDeleting) return;
+    setIsDeleting(true);
+    const result = await deletePost(post.id);
+    if (result.success){
+      console.log("delete successfully")
+    }
+    else{
+      console.log("delete failed")
+    }
+  }
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-4 sm:p-6">
@@ -52,6 +66,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                       variant="ghost"
                       size="icon"
                       className="text-red-500 hover:text-red-700"
+                      onClick={handleDelete}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
