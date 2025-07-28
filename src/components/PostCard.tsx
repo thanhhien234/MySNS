@@ -7,11 +7,13 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
+import { Trash2 } from "lucide-react";
+import { Button } from "./ui/button";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
 
-function PostCard({ post }: { post: Post }) {
+function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-4 sm:p-6">
@@ -44,6 +46,16 @@ function PostCard({ post }: { post: Post }) {
                     </span>
                   </div>
                 </div>
+                {/* 현재 유저가 작성자일 경우 삭제 아이콘 표시 */}
+                {dbUserId === post.author.id && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  )}
               </div>
               <p className="mt-2 text-sm text-foreground break-words">
                 {post.content}
