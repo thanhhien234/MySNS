@@ -22,19 +22,14 @@ export default function CreatePost() {
     if (!content.trim()) return;
 
     setIsPosting(true);
-    try {
-      const result = await createPost(content, imageUrl);
-      if (result?.success) {
-        setContent(""); // reset the form
-        setImageUrl("");
-        setUploadingImage(false);
-        console.log("Post successfully:", result);
-      }
-    } catch (error) {
-      console.error("Failed", error);
-    } finally {
-      setIsPosting(false);
+    const result = await createPost(content, imageUrl);
+    if (result?.success) {
+      setContent(""); // reset the form
+      setImageUrl("");
+      setUploadingImage(false);
+      console.log("Post successfully:", result);
     }
+    setIsPosting(false);
   };
 
   const handleImageClick = () => {
