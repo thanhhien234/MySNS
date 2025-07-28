@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { getUserId } from "./user.action";
+import { revalidatePath } from "next/cache";
 
 export async function createPost(content: string, image: string) {
   const userId = await getUserId();
@@ -15,6 +16,7 @@ export async function createPost(content: string, image: string) {
       authorId: userId,
     },
   });
+  revalidatePath("/");
   return { success: true, post };
 }
 
@@ -73,6 +75,8 @@ export async function deletePost(postId: string) {
   await prisma.post.delete({
     where: { id: postId },
   });
+
+  revalidatePath("/");
 
   return { success: true };
 }
