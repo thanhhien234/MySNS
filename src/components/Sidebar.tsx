@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { Avatar, AvatarImage } from "./ui/avatar";
-import { Separator } from "./ui/separator";
 import Link from "next/link";
 import { getUserByClerkId } from "@/actions/user.action";
 
@@ -32,22 +31,6 @@ async function Sidebar() {
                 <p className="text-sm text-muted-foreground">{user.username}</p>
               </div>
             </Link>
-
-            <div className="w-full">
-              <Separator className="my-4" />
-              <div className="flex justify-between">
-                <div>
-                  <p className="font-medium">{user._count.following}</p>
-                  <p className="text-xs text-muted-foreground">Following</p>
-                </div>
-                <Separator orientation="vertical" />
-                <div>
-                  <p className="font-medium">{user._count.followers}</p>
-                  <p className="text-xs text-muted-foreground">Followers</p>
-                </div>
-              </div>
-              <Separator className="my-4" />
-            </div>
           </div>
         </CardContent>
       </Card>
