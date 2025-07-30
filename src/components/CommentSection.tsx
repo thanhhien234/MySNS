@@ -9,7 +9,7 @@ import { Send } from "lucide-react";
 
 interface Author {
   username?: string | null;
-  imageUrl?: string | null;
+  image?: string | null;
 }
 
 interface Comment {
@@ -36,20 +36,21 @@ export default function CommentSection({ postId }: { postId: string }) {
 
   return (
     <div className="mt-4">
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-6">
         {comments.map((c) => (
           <div key={c.id} className="flex items-center gap-3">
-            {c.author.imageUrl ? (
+            {c.author.image ? (
               <Image
-                src={c.author.imageUrl}
+                src={c.author.image}
                 alt={c.author.username || ""}
-                width={32}
-                height={32}
-                className="rounded-full object-cover"
+                width={30}
+                height={30}
+                className="size-8 sm:w-10 sm:h-10 rounded-full"
               />
             ) : null}
-            <div className="text-sm">
-              <strong>{c.author.username || " "}:</strong> {c.content}
+            <div>
+              <strong className="text-xs">{c.author.username || " "}</strong>
+              <p className="text-sm text-foreground break-words">{c.content}</p>
             </div>
           </div>
         ))}

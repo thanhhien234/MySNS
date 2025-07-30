@@ -22,10 +22,16 @@ export async function getComments(postId: string) {
   return prisma.comment.findMany({
     where: { postId },
     include: {
-      author: true,
+      author: {
+        select: {
+          username: true,
+          image: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
     },
   });
 }
+
