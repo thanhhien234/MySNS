@@ -30,7 +30,7 @@ export async function getComments(postId: string) {
       },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
   });
 }
